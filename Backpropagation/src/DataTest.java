@@ -68,12 +68,11 @@ public class DataTest extends Data {
 		realInputs = new double[dataReal.size()][getReal_in()];
 
 		try {
-			System.out.println("Cargando real inputs");
+		//	System.out.println("Cargando real inputs");
 
 			for (int i = inicio; i < fin; i++)
 				for (int j = 0; j < getReal_in(); j++) {
-					System.out.println("i->" + i + " ,j->" + j + ", valor->"
-							+ dataReal.get(i)[j]);
+				//	System.out.println("i->" + i + " ,j->" + j + ", valor->"+ dataReal.get(i)[j]);
 					realInputs[i - inicio][j] = Double.parseDouble(dataReal
 							.get(i)[j]);
 				}

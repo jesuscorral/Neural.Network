@@ -54,33 +54,36 @@ public class Layer {
 	// Save the weight (-1,1) beetween new neuron of the current layer and every neuron form previous layer.
 	public void initializeWeights()
 	{
-		if(previouslayer != null)
-		{
-			for (Neuron neuronCurrentLayer : this.getNeurons())
+		try {
+			if(previouslayer != null)
 			{
-				for(Neuron neuronPreviousLayer: previouslayer.getNeurons())
+				for (Neuron neuronCurrentLayer : this.getNeurons())
 				{
-					Synapse s = new Synapse(neuronPreviousLayer,(Math.random() * 1) - 0.5); 
-					neuronCurrentLayer.AddInputSynapse(s);
+					for(Neuron neuronPreviousLayer: previouslayer.getNeurons())
+					{
+						Synapse s = new Synapse(neuronPreviousLayer,(Math.random() * 1) - 0.5); 
+						neuronCurrentLayer.AddInputSynapse(s);
+					}
 				}
 			}
+		} catch (Exception e) {
+			System.out.println("Layer.initializeWeights" +e.toString());
 		}
+		
 	}
 	
-	public void calculateOutput()
+	public void calculateOutputLayer()
 	{
-		//Si es la input layer las entradas son las que tomamos del fichero
-		if(previouslayer != null)
+		for(int i = 0; i < neurons.size(); i++) {
+            neurons.get(i).calculateOutputNeuron();
+        }
+	}
+	
+	public void addOutput(double[] outputs)
+	{
+		for(int i = 0; i< 2; i++)
 		{
-		
-		}
-		//sino hay que calcular la entrada con la salida de la capa anterior.
-		else
-		{
-			 for(int i = 0; i < neurons.size(); i++) {
-		           // neurons.get(i).setOutput();;
-		        }
-
+			neurons.get(i).setOutput(outputs[i]);
 		}
 	}
 }

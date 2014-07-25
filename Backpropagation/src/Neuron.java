@@ -15,7 +15,6 @@ public class Neuron {
 	private List<Synapse> inputSynapses;
 	
 	private double error;
-	private double derivative;
 
 	public ActivationFunction getAf() {
 		return af;
@@ -57,21 +56,12 @@ public class Neuron {
 		this.error = error;
 	}
 
-	public double getDerivative() {
-		return derivative;
-	}
-
-	public void setDerivative(double derivative) {
-		this.derivative = derivative;
-	}
 
 	// Every neuron may have one or more synapses, one by each input.
 	public Neuron(ActivationFunction activationFunction) {
 		setInputSynapses(new ArrayList<Synapse>());
 		setAf(activationFunction);
-		// af = activationFunction;
 		setError(error);
-		// error = 0;
 	}
 
 	// Synapse is weight between a neuron and the next neuron
@@ -79,6 +69,18 @@ public class Neuron {
 		inputSynapses.add(input);
 	}
 
-  
+	public void calculateOutputNeuron()
+	{
+		calculateWeight();
+		output = af.valueActivation(weight);
+    }
+
+    private void calculateWeight() {
+        weight = 0;
+        for (Synapse synapse : inputSynapses) {
+            weight += synapse.getWeight() * synapse.getSourceNeuron().getOutput();
+        }
+    }
+
 
 }

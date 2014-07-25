@@ -55,7 +55,8 @@ public class Menu {
 			System.out.println("7. Mushroom");
 			System.out.println("8. Soybean");
 			System.out.println("9. Thryroid");
-			System.out.println("10. Exit");
+			System.out.println("10. Flare");	
+			System.out.println("11. Exit");
 			System.out.println("------------------------\n");
 			System.out.println("Choose a data set: \n");
 
@@ -114,11 +115,16 @@ public class Menu {
 				pathDataSetThree = "files/cancer/thryroid3.dt";
 				break;
 			case 10:
+				pathDataSetOne = "files/flare/flare1.dt";
+				pathDataSetTwo = "files/flare/flare2.dt";
+				pathDataSetThree = "files/flare/flare3.dt";
+				break;
+			case 11:
 				break;
 				
 			}
 
-		} while (option > 10 || option < 0);
+		} while (option > 11 || option < 0);
 
 	}
 }

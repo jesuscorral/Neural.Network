@@ -1,5 +1,5 @@
 /**
- * @author Jesús Corral Pérez
+ * @author Jes��s Corral P��rez
  *
  */
 
@@ -38,8 +38,16 @@ public class Algorithm {
 
 			// Add neurons to the input layer. We add as many neurons as input
 			// training examples
+			// HACER UN MENU PARA PODER ELEGIR ENTRE TRAINING, VALIDATION AND TEST, dependiendo de cada una 
+			// pondremos unos limites u otros.
+			int numNeuronInput;
+			if(dataTraining.getBool_in() != 0)
+				numNeuronInput = dataTraining.getBool_in();
+			else
+				numNeuronInput = dataTraining.getReal_in();
+			
 			Layer inputLayer = new Layer();
-			for (int i = 0; i < dataTraining.getTraining_examples(); i++) {
+			for (int i = 0; i < numNeuronInput; i++) {
 				Neuron n = new Neuron(activationFunction);
 				inputLayer.AddNeuron(n);
 			}
@@ -51,8 +59,13 @@ public class Algorithm {
 				hiddenLayer.AddNeuron(neuron);
 			}
 
+			int numNeuronOutput;
+			if(dataTraining.getReal_out() != 0)
+				numNeuronOutput = dataTraining.getReal_out();
+			else
+				numNeuronOutput = dataTraining.getBool_out();
 			Layer outputLayer = new Layer(hiddenLayer);
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < numNeuronOutput; i++) {
 				Neuron neuron = new Neuron(activationFunction);
 				outputLayer.AddNeuron(neuron);
 			}
@@ -61,16 +74,10 @@ public class Algorithm {
 			neuralNetwork.addLayer(hiddenLayer);
 			neuralNetwork.addLayer(outputLayer);
 			
-			
-		//	Backpropagation bk = new Backpropagation(neuralNetwork, learningRate, momentum)
-			
-			/*Neuron n = new Neuron(new ActivationFunction());
-			n = hiddenLayer.getNeurons().get(0);
-			Synapse s = new Synapse();
-			s = n.getInputSynapses().get(0);
-			System.out.println("valor: " +s.getWeight());
-*/
-			
+			Backpropagation bk = new Backpropagation(neuralNetwork, 0.1, 0.9);
+		
+			bk.backpropagationAlgorithm(dataTraining);
+	
 			
 		} catch (Exception e) {
 			System.out.println("Algorithm.main" + e.toString());

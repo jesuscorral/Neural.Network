@@ -59,24 +59,51 @@ public class DataTraining extends Data {
 		}
 	}
 
+	//Funciona
 	private void LoadInputReal(List<String[]> dataReal) {
 		int inicio = getHeadLines();
 		int fin = getHeadLines() + getTraining_examples();
 
-		realInputs = new double[dataReal.size()][getReal_in()];
+		realInputs = new double[getTraining_examples()][getReal_in()];
 
 		try {
 			// System.out.println("Cargando real inputs");
 			for (int i = inicio; i < fin; i++)
 				for (int j = 0; j < getReal_in(); j++) {
-					realInputs[i - inicio][j] = Double.parseDouble(dataReal
-							.get(i)[j]);
+					realInputs[i - inicio][j] = Double.parseDouble(dataReal.get(i)[j]);
 				}
 		} catch (Exception e) {
 			System.out.println("DataTraining.LoadInputReal" + e.toString());
 		}
 	}
 
+	
+	private void LoadOutputReal(List<String[]> dataReal) {
+		int inicio = getHeadLines();
+		int fin = getHeadLines() + getTraining_examples();
+		int inicio2;
+		/*
+		 * The second index (to save the output)depend of the input. We must
+		 * start to save the value for the output apart from of the end of the
+		 * inputs.
+		 */
+		if (getReal_in() == 0)
+			inicio2 = getBool_in();
+		else
+			inicio2 = getReal_in();
+
+		realOutputs = new double[getTraining_examples()][getReal_out()];
+
+		try {
+			for (int i = inicio; i < fin; i++)
+				for (int j = inicio2; j < (inicio2 + getReal_out()); j++) {
+					realOutputs[i - inicio][j-inicio2] = Double.parseDouble(dataReal.get(i)[j]);
+				}
+		} catch (Exception e) {
+			System.out.println("DataTraining.LoadOutputReal" + e.toString());
+		}
+	}
+	
 	private void LoadOutputBoolean(List<String[]> dataBoolean) {
 		int inicio = getHeadLines();
 		int fin = getHeadLines() + getTraining_examples();
@@ -91,7 +118,7 @@ public class DataTraining extends Data {
 		else
 			inicio2 = getReal_in();
 
-		bolOutputs = new boolean[dataBoolean.size()][dataBoolean.size()];
+		bolOutputs = new boolean[getTraining_examples()][getBool_out()];
 
 		try {
 			for (int i = inicio; i < fin; i++)
@@ -107,7 +134,7 @@ public class DataTraining extends Data {
 		int inicio = getHeadLines();
 		int fin = getHeadLines() + getTraining_examples();
 
-		bolInputs = new boolean[dataBoolean.size()][dataBoolean.size()];
+		bolInputs = new boolean[getTraining_examples()][getBool_in()];
 
 		try {
 			for (int i = inicio; i < fin; i++)
@@ -119,31 +146,6 @@ public class DataTraining extends Data {
 		}
 	}
 
-	private void LoadOutputReal(List<String[]> dataReal) {
-		int inicio = getHeadLines();
-		int fin = getHeadLines() + getTraining_examples();
-		int inicio2;
-		/*
-		 * The second index (to save the output)depend of the input. We must
-		 * start to save the value for the output apart from of the end of the
-		 * inputs.
-		 */
-		if (getReal_in() == 0)
-			inicio2 = getBool_in();
-		else
-			inicio2 = getReal_in();
-
-		realOutputs = new double[dataReal.size()][dataReal.size()];
-
-		try {
-			for (int i = inicio; i < fin; i++)
-				for (int j = inicio2; j < (inicio2 + getReal_out()); j++) {
-					realOutputs[i - inicio][j] = Double.parseDouble(dataReal.get(i)[j]);
-				}
-		} catch (Exception e) {
-			System.out.println("DataTraining.LoadOutputReal" + e.toString());
-		}
-
-	}
+	
 
 }
