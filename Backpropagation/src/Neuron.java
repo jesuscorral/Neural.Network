@@ -13,9 +13,9 @@ public class Neuron {
 	private double output = 0;
 	private double weight;
 	private List<Synapse> inputSynapses;
-	
 	private double error;
-
+	private double valueRetropropagtion;
+	
 	public ActivationFunction getAf() {
 		return af;
 	}
@@ -56,6 +56,13 @@ public class Neuron {
 		this.error = error;
 	}
 
+	public double getValueRetropropagtion() {
+		return valueRetropropagtion;
+	}
+
+	public void setValueRetropropagtion(double valueRetropropagtion) {
+		this.valueRetropropagtion = valueRetropropagtion;
+	}
 
 	// Every neuron may have one or more synapses, one by each input.
 	public Neuron(ActivationFunction activationFunction) {
@@ -73,6 +80,7 @@ public class Neuron {
 	{
 		calculateWeight();
 		output = af.valueActivation(weight);
+		valueRetropropagtion = af.valueRetropropagation(output);
     }
 
     private void calculateWeight() {

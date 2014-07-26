@@ -40,6 +40,7 @@ public class Algorithm {
 			// training examples
 			// HACER UN MENU PARA PODER ELEGIR ENTRE TRAINING, VALIDATION AND TEST, dependiendo de cada una 
 			// pondremos unos limites u otros.
+			
 			int numNeuronInput;
 			if(dataTraining.getBool_in() != 0)
 				numNeuronInput = dataTraining.getBool_in();

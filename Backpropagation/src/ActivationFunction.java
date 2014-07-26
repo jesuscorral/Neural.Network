@@ -10,6 +10,10 @@ public class ActivationFunction {
         return 1.0 / (1 + Math.exp(-1.0 * weight));
     }
 
+	public double valueRetropropagation (double output) {
+        return output * (1.0 - output);
+    }
+
 
 	
 }

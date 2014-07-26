@@ -56,30 +56,28 @@ public class NeuralNetwork {
 		output = layer;
 	}
 
-	public double[][] getOutputs(DataTraining dataTraining)
+	public double[] getOutputs(DataTraining dataTraining, int numExample)
 	{
-        double[][] outputs = new double[dataTraining.getTraining_examples()][output.getNeurons().size()];
+        double[] outputs = new double[output.getNeurons().size()];
 
-        for(int i=0;i<dataTraining.getTraining_examples();i++)
-        {
-        	
         	for(Layer layer : layers)
             {
         		if(layer.getPreviouslayer() == null)
         		{
-        			layer.addOutput(dataTraining.getRealOutputs()[i]);
+        			layer.addOutput(dataTraining.getRealInputs()[numExample]);
         		}
         		else{
         		layer.calculateOutputLayer();
         		}
             }
         
-        	for(int j=0;j< output.getNeurons().size();j++)
+/*        	for(int j=0;j< output.getNeurons().size();j++)
         	{
         		outputs[i][j] = output.getNeurons().get(j).getOutput();
-        	}
-        	
-        }
+        	}*/
+     
         return outputs;
 	}
+	
+	
 }

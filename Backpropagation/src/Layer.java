@@ -81,10 +81,18 @@ public class Layer {
 	
 	public void addOutput(double[] outputs)
 	{
-		for(int i = 0; i< 2; i++)
+		for(int i = 0; i< outputs.length; i++)
 		{
 			neurons.get(i).setOutput(outputs[i]);
 		}
+	}
+	
+	public boolean isOutputLayer()
+	{
+		if (getNextlayer() == null)
+				return true;
+		else
+			return false;
 	}
 }
 
