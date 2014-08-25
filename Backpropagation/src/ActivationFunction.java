@@ -1,9 +1,24 @@
 public class ActivationFunction {
 
-	public ActivationFunction() {
-		super();
+	double e;
+	double p;
+	
+/*	public ActivationFunction() {
+		e = Math.E; 
+		p = 1;
+	//	super();
+		
+	}*/
+	
+	public ActivationFunction(){
 		
 	}
+	
+/*	public double sigmoide(double a)
+	{
+		
+		return (1/(1+ Math.pow(e, -a/p)));
+	}*/
 	
 	public double valueActivation(double weight) {
 		

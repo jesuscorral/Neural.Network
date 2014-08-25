@@ -6,8 +6,6 @@ public class Menu {
 	private String pathDataSetOne;
 	private String pathDataSetTwo;
 	private String pathDataSetThree;
-	
-	static final String PATH = "files/cancer";
 
 	
 	public String getPathDataSetOne() {
@@ -41,7 +39,8 @@ public class Menu {
 
 	public void show() {
 		int option = 0;
-	    
+		
+		try {
 		do{
 			System.out.println("----------Menu----------"
 					+ "\n------------------------");
@@ -55,76 +54,90 @@ public class Menu {
 			System.out.println("7. Mushroom");
 			System.out.println("8. Soybean");
 			System.out.println("9. Thryroid");
-			System.out.println("10. Flare");	
-			System.out.println("11. Exit");
+			System.out.println("10. Building");
+			System.out.println("11. Flare");
+			System.out.println("12. Pruebas");
+			System.out.println("13. Exit");
 			System.out.println("------------------------\n");
 			System.out.println("Choose a data set: \n");
 
 			option = in.nextInt();
 
+	
+
 			switch (option) {
 			case 0:
-				System.out.println("Dentro de la eleccion");
 				pathDataSetOne = "files/cancer/cancer1.dt";
 				pathDataSetTwo = "files/cancer/cancer2.dt";
 				pathDataSetThree = "files/cancer/cancer3.dt";
 				break;
 			case 1:
-				pathDataSetOne = "files/cancer/card1.dt";
-				pathDataSetTwo = "files/cancer/card2.dt";
-				pathDataSetThree = "files/cancer/card3.dt";
+				pathDataSetOne = "files/card/card1.dt";
+				pathDataSetTwo = "files/card/card2.dt";
+				pathDataSetThree = "files/card/card3.dt";
 				break;
 			case 2:
-				pathDataSetOne = "files/cancer/diabetes1.dt";
-				pathDataSetTwo = "files/cancer/diabetes2.dt";
-				pathDataSetThree = "files/cancer/diabetes3.dt";
+				pathDataSetOne = "files/diabetes/diabetes1.dt";
+				pathDataSetTwo = "files/diabetes/diabetes2.dt";
+				pathDataSetThree = "files/diabetes/diabetes3.dt";
 				break;
 			case 3:
-				pathDataSetOne = "files/cancer/gene1.dt";
-				pathDataSetTwo = "files/cancer/gene2.dt";
-				pathDataSetThree = "files/cancer/gene3.dt";
+				pathDataSetOne = "files/gene/gene1.dt";
+				pathDataSetTwo = "files/gene/gene2.dt";
+				pathDataSetThree = "files/gene/gene3.dt";
 				break;
 			case 4:
-				pathDataSetOne = "files/cancer/glass1.dt";
-				pathDataSetTwo = "files/cancer/glass2.dt";
-				pathDataSetThree = "files/cancer/glass3.dt";
+				pathDataSetOne = "files/glass/glass1.dt";
+				pathDataSetTwo = "files/glass/glass2.dt";
+				pathDataSetThree = "files/glass/glass3.dt";
 				break;
 			case 5:
-				pathDataSetOne = "files/cancer/heart1.dt";
-				pathDataSetTwo = "files/cancer/heart2.dt";
-				pathDataSetThree = "files/cancer/heart3.dt";
+				pathDataSetOne = "files/heart/heart1.dt";
+				pathDataSetTwo = "files/heart/heart2.dt";
+				pathDataSetThree = "files/heart/heart3.dt";
 				break;
 			case 6:
-				pathDataSetOne = "files/cancer/horse1.dt";
-				pathDataSetTwo = "files/cancer/horse2.dt";
-				pathDataSetThree = "files/cancer/horse3.dt";
+				pathDataSetOne = "files/horse/horse1.dt";
+				pathDataSetTwo = "files/horse/horse2.dt";
+				pathDataSetThree = "files/horse/horse3.dt";
 				break;
 			case 7:
-				pathDataSetOne = "files/cancer/mushroom1.dt";
-				pathDataSetTwo = "files/cancer/mushroom2.dt";
-				pathDataSetThree = "files/cancer/mushroom3.dt";
+				pathDataSetOne = "files/mushroom/mushroom1.dt";
+				pathDataSetTwo = "files/mushroom/mushroom2.dt";
+				pathDataSetThree = "files/mushroom/mushroom3.dt";
 				break;
 			case 8:
-				pathDataSetOne = "files/cancer/soybean1.dt";
-				pathDataSetTwo = "files/cancer/soybean2.dt";
-				pathDataSetThree = "files/cancer/soybean3.dt";
+				pathDataSetOne = "files/soybean/soybean1.dt";
+				pathDataSetTwo = "files/soybean/soybean2.dt";
+				pathDataSetThree = "files/soybean/soybean3.dt";
 				break;
 			case 9:
-				pathDataSetOne = "files/cancer/thryroid1.dt";
-				pathDataSetTwo = "files/cancer/thryroid2.dt";
-				pathDataSetThree = "files/cancer/thryroid3.dt";
+				pathDataSetOne = "files/thyroid/thyroid1.dt";
+				pathDataSetTwo = "files/thyroid/thyroid2.dt";
+				pathDataSetThree = "files/thyroid/thyroid3.dt";
 				break;
 			case 10:
+				pathDataSetOne = "files/building/building1.dt";
+				pathDataSetTwo = "files/building/building2.dt";
+				pathDataSetThree = "files/building/building3.dt";
+				break;
+			case 11:
 				pathDataSetOne = "files/flare/flare1.dt";
 				pathDataSetTwo = "files/flare/flare2.dt";
 				pathDataSetThree = "files/flare/flare3.dt";
 				break;
-			case 11:
+			case 12:
+				pathDataSetOne = "files/pruebas/prueba1.dt";
 				break;
-				
-			}
+			case 13:
+				System.out.println("Finished");
+				System.exit(0);
+				}
 
-		} while (option > 11 || option < 0);
-
+		} while (option > 13 || option < 0);
+		
+		} catch (Exception e) {
+			System.out.println("Invalid option");
+		}
 	}
 }

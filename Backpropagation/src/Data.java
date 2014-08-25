@@ -96,6 +96,7 @@ public class Data {
 			String line = null;
 			rows = new ArrayList<String[]>();
 			while ((line = buf.readLine()) != null) {
+				line = line.trim();
 				String[] row = pattern.split(line);
 				rows.add(row);
 			}
@@ -126,6 +127,5 @@ public class Data {
 		
 		return rows;
 	}
-
 
 }

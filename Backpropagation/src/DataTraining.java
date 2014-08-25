@@ -3,85 +3,62 @@ import java.util.List;
 
 public class DataTraining extends Data {
 
-	private double realInputs[][];
-	private double realOutputs[][];
-	private boolean bolInputs[][];
-	private boolean bolOutputs[][];
+	private double inputs[][];
+	private double outputs[][];
 
-	public double[][] getRealInputs() {
-		return realInputs;
+	public double[][] getOutputs() {
+		return outputs;
 	}
 
-	public void setRealInputs(double[][] realInputs) {
-		this.realInputs = realInputs;
+	public void setOutputs(double outputs[][]) {
+		this.outputs = outputs;
 	}
 
-	public double[][] getRealOutputs() {
-		return realOutputs;
+	public double[][] getInputs() {
+		return inputs;
 	}
 
-	public void setRealOutputs(double[][] realOutputs) {
-		this.realOutputs = realOutputs;
+	public void setInputs(double inputs[][]) {
+		this.inputs = inputs;
 	}
-
-	public boolean[][] getBolInputs() {
-		return bolInputs;
-	}
-
-	public void setBolInputs(boolean[][] bolInputs) {
-		this.bolInputs = bolInputs;
-	}
-
-	public boolean[][] getBolOutputs() {
-		return bolOutputs;
-	}
-
-	public void setBolOutputs(boolean[][] bolOutputs) {
-		this.bolOutputs = bolOutputs;
-	}
-
+	
 	public void LoadDataTraining(String path) {
 		List<String[]> data = new ArrayList<String[]>();
 
-		data = LoadCommonData(path);
-
-		if (getBool_in() != 0) {
-			LoadInputBoolean(data);
-		}
-		if (getBool_out() != 0) {
-			LoadOutputBoolean(data);
-		}
-		if (getReal_in() != 0) {
-			LoadInputReal(data);
-		}
-		if (getReal_out() != 0) {
-			LoadOutputReal(data);
-		}
+		data = LoadCommonData(path);	
+		LoadInputs(data);
+		LoadOutputs(data);
+		
 	}
 
 	//Funciona
-	private void LoadInputReal(List<String[]> dataReal) {
+	private void LoadInputs(List<String[]> data) {
 		int inicio = getHeadLines();
 		int fin = getHeadLines() + getTraining_examples();
+		int numIn;
+		
+		if(getReal_in() == 0)
+			numIn = getBool_in();
+		else
+			numIn = getReal_in();
 
-		realInputs = new double[getTraining_examples()][getReal_in()];
+		inputs = new double[getTraining_examples()][numIn];
 
 		try {
-			// System.out.println("Cargando real inputs");
 			for (int i = inicio; i < fin; i++)
-				for (int j = 0; j < getReal_in(); j++) {
-					realInputs[i - inicio][j] = Double.parseDouble(dataReal.get(i)[j]);
+				for (int j = 0; j < numIn; j++) {
+					inputs[i - inicio][j] = Double.parseDouble(data.get(i)[j]);
 				}
 		} catch (Exception e) {
-			System.out.println("DataTraining.LoadInputReal" + e.toString());
+			System.out.println("DataTraining.LoadInputs ->" + e.toString());
 		}
 	}
 
 	
-	private void LoadOutputReal(List<String[]> dataReal) {
+	private void LoadOutputs(List<String[]> data) {
 		int inicio = getHeadLines();
 		int fin = getHeadLines() + getTraining_examples();
-		int inicio2;
+		int inicio2, numOuts;
 		/*
 		 * The second index (to save the output)depend of the input. We must
 		 * start to save the value for the output apart from of the end of the
@@ -92,60 +69,21 @@ public class DataTraining extends Data {
 		else
 			inicio2 = getReal_in();
 
-		realOutputs = new double[getTraining_examples()][getReal_out()];
-
-		try {
-			for (int i = inicio; i < fin; i++)
-				for (int j = inicio2; j < (inicio2 + getReal_out()); j++) {
-					realOutputs[i - inicio][j-inicio2] = Double.parseDouble(dataReal.get(i)[j]);
-				}
-		} catch (Exception e) {
-			System.out.println("DataTraining.LoadOutputReal" + e.toString());
-		}
-	}
-	
-	private void LoadOutputBoolean(List<String[]> dataBoolean) {
-		int inicio = getHeadLines();
-		int fin = getHeadLines() + getTraining_examples();
-		int inicio2;
-		/*
-		 * The second index (to save the output)depend of the input. We must
-		 * start to save the value for the output apart from of the end of the
-		 * inputs.
-		 */
-		if (getReal_in() == 0)
-			inicio2 = getBool_in();
+		//Comprueba si la salida es Real o Boolena para cargar el numero de salidas correspondiente
+		if(getReal_out() == 0)
+			numOuts = getBool_out();
 		else
-			inicio2 = getReal_in();
-
-		bolOutputs = new boolean[getTraining_examples()][getBool_out()];
-
-		try {
-			for (int i = inicio; i < fin; i++)
-				for (int j = inicio2; j < (inicio2 + getBool_out()); j++) {
-					bolOutputs[i - inicio][j] = (dataBoolean.get(i)[j]) != null;
-				}
-		} catch (Exception e) {
-			System.out.println("DataTraining.LoadOutputBoolean" + e.toString());
-		}
-	}
-
-	private void LoadInputBoolean(List<String[]> dataBoolean) {
-		int inicio = getHeadLines();
-		int fin = getHeadLines() + getTraining_examples();
-
-		bolInputs = new boolean[getTraining_examples()][getBool_in()];
+			numOuts = getReal_out();
+		
+		outputs = new double[getTraining_examples()][numOuts];
 
 		try {
 			for (int i = inicio; i < fin; i++)
-				for (int j = 0; j < getBool_in(); j++) {
-					bolInputs[i - inicio][j] = (dataBoolean.get(i)[j]) != null;
+				for (int j = inicio2; j < (inicio2 + numOuts); j++) {
+					outputs[i - inicio][j-inicio2] = Double.parseDouble(data.get(i)[j]);
 				}
 		} catch (Exception e) {
-			System.out.println("DataTraining.LoadInputBoolean" + e.toString());
+			System.out.println("DataTraining.LoadOutputs" + e.toString());
 		}
 	}
-
-	
-
 }

@@ -11,6 +11,7 @@ public class Neuron {
 
 	private ActivationFunction af;
 	private double output = 0;
+	private boolean booloutput = false;
 	private double weight;
 	private List<Synapse> inputSynapses;
 	private double error;
@@ -27,7 +28,7 @@ public class Neuron {
 	public double getOutput() {
 		return output;
 	}
-
+	
 	public void setOutput(double output) {
 		this.output = output;
 	}
@@ -80,6 +81,7 @@ public class Neuron {
 	{
 		calculateWeight();
 		output = af.valueActivation(weight);
+		//Si la red es discreta es decir solo se admiten valores boolean la salida se calcula así
 		valueRetropropagtion = af.valueRetropropagation(output);
     }
 
@@ -89,6 +91,14 @@ public class Neuron {
             weight += synapse.getWeight() * synapse.getSourceNeuron().getOutput();
         }
     }
+
+	public boolean getBooloutput() {
+		return booloutput;
+	}
+
+	public void setBooloutput(boolean booloutput) {
+		this.booloutput = booloutput;
+	}
 
 
 }
