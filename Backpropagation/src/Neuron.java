@@ -1,3 +1,10 @@
+/*
+ * @author Jesús Corral Versión
+ * @University Universidad de Sevilla
+ * @Subject Inteligencia Artificial 2
+ * @Proyect Backpropagation Algorithm with momentum and cross validation for Neural Network
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +24,42 @@ public class Neuron {
 	private double error;
 	private double valueRetropropagtion;
 	
+	
+	// Every neuron may have one or more synapses, one by each input.
+	public Neuron(ActivationFunction activationFunction) {
+		setInputSynapses(new ArrayList<Synapse>());
+		setAf(activationFunction);
+		setError(error);
+	}
+
+	// Synapse is weight between a neuron and the next neuron
+	public void AddInputSynapse(Synapse input) {
+		inputSynapses.add(input);
+	}
+
+	public void calculateOutputNeuron()
+	{
+		calculateWeight();
+		output = af.valueActivation(weight);
+		valueRetropropagtion = af.valueRetropropagation(output);
+    }
+
+    private void calculateWeight() {
+        weight = 0;
+        for (Synapse synapse : inputSynapses) {
+            weight += synapse.getWeight() * synapse.getSourceNeuron().getOutput();
+        }
+    }
+
+    /*Getters and Setters*/
+	public boolean getBooloutput() {
+		return booloutput;
+	}
+
+	public void setBooloutput(boolean booloutput) {
+		this.booloutput = booloutput;
+	}
+
 	public ActivationFunction getAf() {
 		return af;
 	}
@@ -64,41 +107,5 @@ public class Neuron {
 	public void setValueRetropropagtion(double valueRetropropagtion) {
 		this.valueRetropropagtion = valueRetropropagtion;
 	}
-
-	// Every neuron may have one or more synapses, one by each input.
-	public Neuron(ActivationFunction activationFunction) {
-		setInputSynapses(new ArrayList<Synapse>());
-		setAf(activationFunction);
-		setError(error);
-	}
-
-	// Synapse is weight between a neuron and the next neuron
-	public void AddInputSynapse(Synapse input) {
-		inputSynapses.add(input);
-	}
-
-	public void calculateOutputNeuron()
-	{
-		calculateWeight();
-		output = af.valueActivation(weight);
-		//Si la red es discreta es decir solo se admiten valores boolean la salida se calcula así
-		valueRetropropagtion = af.valueRetropropagation(output);
-    }
-
-    private void calculateWeight() {
-        weight = 0;
-        for (Synapse synapse : inputSynapses) {
-            weight += synapse.getWeight() * synapse.getSourceNeuron().getOutput();
-        }
-    }
-
-	public boolean getBooloutput() {
-		return booloutput;
-	}
-
-	public void setBooloutput(boolean booloutput) {
-		this.booloutput = booloutput;
-	}
-
 
 }

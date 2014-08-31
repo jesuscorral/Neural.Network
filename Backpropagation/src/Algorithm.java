@@ -1,61 +1,84 @@
+
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
-/**
- * @author Jes��s Corral P��rez
- *
+/*
+ * @author Jesús Corral Versión
+ * @University Universidad de Sevilla
+ * @Subject Inteligencia Artificial 2
+ * @Proyect Backpropagation Algorithm with momentum and cross validation for Neural Network
  */
 
 public class Algorithm {
 	
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		
-		Menu menu = new Menu();
-		
+		NeuralNetwork neuralNetwork = new NeuralNetwork();
 		DataTest dataTest = new DataTest();
 		DataTraining dataTraining = new DataTraining();
 		DataValidation dataValidation = new DataValidation();
-		NeuralNetwork neuralNetwork = new NeuralNetwork();
 		ActivationFunction activationFunction = new ActivationFunction();
 		int numberOfHiddenLayer = 0;
-		int numberOfProblem = 0;
 		InputStreamReader isr = new InputStreamReader(System.in);
 	    BufferedReader br = new BufferedReader (isr);
-	    int numEx = 0;
-		double errorTraining = 0.0, errorValidation = 0.0, errorTest = 0.0, testSetClasification = 0.0, overfit = 0.0, totalEpochs = 0.0, relevantEpochs = 0.0;
-	    double[] errorsTraining,errorsValidation, errorsTest, valuesOverfit, numEpochs, numRelevantEpochs;
-	    double meanErrorTraining = 0.0, meanErrorValidation = 0.0, meanErrorTest = 0.0, meanOverfit = 0.0, meanEpochs = 0.0, meanRelevantEpochs = 0.0;
-	    double stddevTraining = 0.0, stddevTest = 0.0, stddevValidation = 0.0, stddevOverfit = 0.0, stddevEpochs = 0.0, stddevRelevantEpochs = 0.0;
+	 
+		int totalEpochs = 0, relevantEpochs = 0, numEx = 0;
+		double errorTest = 0.0, testSetClasification = 0.0;
+	    double meanErrorTraining = 0.0, meanErrorValidation = 0.0, meanOverfit = 0.0;
+	    double stddevErrorTraining = 0.0, stddevErrorValidation = 0.0, stddevOverfit = 0.0;
+	   
 	    String problem = "";
+	    double momentum = 0.0;
+	    double learningRate = 0.0;
+	    double threshold = 0.0;
+	    int maxEpoch = 3000;
+	    boolean clasificationProblem = false; //Only clasfication problem need to calculate the "Test Set Clasification"
+	    int menuOption = -1;
 	    
 		try {
-			System.out.println("How many hidden layers do you want?");
+
+			
+			// Show main menu with the twelve problems and choose some option
+			Menu menu = new Menu(menuOption);
+			menu.showMainMenu();
+			// Show the submenu with three option by each problem.
+			menu.showSubMenu();
+			
+			do{
+			System.out.println("Number of layers (>=0) : ");
 			numberOfHiddenLayer= Integer.parseInt(br.readLine());
+			if(numberOfHiddenLayer < 0)
+				System.out.println("Please insert a number of hidden layer greater or equal than 0.\n");
+			}while(numberOfHiddenLayer < 0);
+
+			do{
+			System.out.println("Number of executions (>=1): ");
+			numEx = Integer.parseInt(br.readLine());
+			if(numEx < 1)
+				System.out.println("Please insert a number of executions greater or equal than 0.\n");
+			}while(numEx < 1);
+
 			
-			// Show menu and choose some option
-			menu.show();
-			System.out.println("Select number of problem:");
-			System.out.println("1.- Problem 1:");
-			System.out.println("2.- Problem 2:");
-			System.out.println("3.- Problem 3: \n");
-			System.out.println("------------------------\n");
-			System.out.println("Choose problem: \n");
-			numEx = 3;//CAMBIARRRR¡¡¡¡
-			errorsTraining = new double[numEx];
-			errorsValidation = new double[numEx];
-			errorsTest = new double[numEx];
-			valuesOverfit = new double[numEx];
-			numEpochs = new double[numEx];
-			numRelevantEpochs = new double[numEx];
+			System.out.println("Learning Rate: ");
+			learningRate = Double.parseDouble(br.readLine());
 			
-			numberOfProblem = Integer.parseInt(br.readLine());
-			switch(numberOfProblem)
+
+			System.out.println("Momentum: ");
+			momentum= Double.parseDouble(br.readLine());
+			
+
+			System.out.println("Threshold: ");
+			threshold= Double.parseDouble(br.readLine());
+			
+			if (menu.getOption() <= 9 || menu.getOption() >= 0)
+				clasificationProblem = true;
+			else
+				clasificationProblem = false;
+				
+			
+			switch(menu.getNumberOptionSubmenu())
 			{
 			case 1:
 				dataTraining.LoadDataTraining(menu.getPathDataSetOne());
@@ -90,6 +113,7 @@ public class Algorithm {
 				System.out.println("Run Training number: " + (cEx + 1));
 				System.out.println("===========================================\n");
 				
+			//Input Layer
 			Layer inputLayer = new Layer();
 			Neuron bias = new Neuron(activationFunction);
 			bias.setOutput(-1);
@@ -133,114 +157,58 @@ public class Algorithm {
 				Neuron neuron = new Neuron(activationFunction);
 				outputLayer.AddNeuron(neuron);
 			}
-
 			neuralNetwork.addLayer(outputLayer);
 			
-			Backpropagation bk = new Backpropagation(neuralNetwork, 0.01, 0.05, dataTraining, dataValidation, numEx, errorTraining, errorValidation, errorTest, testSetClasification, overfit, totalEpochs, relevantEpochs );
-		
-			 int maxEpoch = 300;
-			 double threshold = 0.003;
-			 bk.exec(maxEpoch, threshold);
-			 
-			 errorsTest[cEx] = bk.getErrorTest();
-			 errorsTraining[cEx] = bk.getErrorTraining();
-			 errorsValidation[cEx] = bk.getErrorValidation();
-			 valuesOverfit[cEx] = bk.getOverfit();
-			 numEpochs[cEx] = bk.getTotalEpochs();
-			 numRelevantEpochs[cEx] = bk.getRelevantEpochs();
-			 
-			 meanErrorTest = calculateMean(errorsTest, numEx);
-			 meanErrorValidation = calculateMean(errorsValidation, numEx);
-			 meanErrorTraining = calculateMean(errorsTraining, numEx);
-			 meanOverfit = calculateMean(valuesOverfit, numEx);
-			 meanEpochs = calculateMean(numEpochs, numEx);
-			 meanRelevantEpochs = calculateMean(numRelevantEpochs, numEx);
-			 
-			 stddevTest = calculateStddev(errorsTest, meanErrorTest, numEx);
-			 stddevTraining = calculateStddev(errorsTraining, meanErrorTraining, numEx);
-			 stddevValidation = calculateStddev(errorsValidation, meanErrorValidation, numEx);
-			 stddevOverfit = calculateStddev(valuesOverfit, meanOverfit, numEx);
-			 stddevEpochs = calculateStddev(numEpochs, meanEpochs, numEx);
-			 stddevRelevantEpochs = calculateStddev(numRelevantEpochs, meanRelevantEpochs, numEx);
-			 
-			 //Math.rint(meanTraining * 100) / 100 );
-			 
+			//Exec the algorithm
+			Backpropagation bk = new Backpropagation(neuralNetwork, learningRate, momentum, dataTraining, 
+					dataValidation, dataTest, numEx, meanErrorTraining,stddevErrorTraining, meanErrorValidation, 
+					stddevErrorValidation, errorTest, testSetClasification, meanOverfit, stddevOverfit, 
+					totalEpochs, relevantEpochs, clasificationProblem);
+			bk.exec(maxEpoch, threshold);
+
+			//Show the results in a text file
 			 Pattern patternEq = Pattern.compile("/");
 			 String[] problemRow = patternEq.split(problem);
 			 
-		
+			 String sFichero = "Results.txt";
+			 FileWriter fichero = new FileWriter(sFichero, true);
 			 
-			 String sFichero = "fichero.txt";
-			 FileWriter fichero = new FileWriter("/Users/jesus/Desktop/" +sFichero);
-			 
-				 fichero.write("Problem: " + 	problemRow[1] + "\n");
+				 fichero.write("*************************************************\n");
+				 fichero.write("CONFIGURATION:\n");
+				 fichero.write(" Problem: " + 	problemRow[2] + "\n");
+				 fichero.write(" Number of execution" + (cEx + 1) + "\n");
+				 fichero.write(" Number maximium of epochs: " +maxEpoch);
+				 fichero.write("\n Momentum: " +momentum);
+				 fichero.write("\n Learning Rate: " +learningRate);
+				 fichero.write("\n Threshold: " +threshold);
+				 fichero.write("\n Number of hiddens layers " + numberOfHiddenLayer);
+				 fichero.write("\n*************************************************\n\n");
+				 fichero.write("RESULTS:\n ");
 				 fichero.write("\t Training Set \n");
-				 fichero.write("\t\t Mean:" + meanErrorTraining + "\n");
-				 fichero.write("\t\t Stddev" + stddevTraining + "\n");
+				 fichero.write("\t\t Mean: " + Math.rint(bk.getMeanErrorTraining() * 10000) / 10000 + "\n");
+				 fichero.write("\t\t Stddev: " + Math.rint(bk.getStddevErrorTraining() * 10000) / 10000 + "\n");
 				 fichero.write("\t Validation Set \n");
-				 fichero.write("\t\t Mean" + meanErrorValidation + "\n");
-				 fichero.write("\t\t Stddev" + stddevValidation + "\n");
+				 fichero.write("\t\t Mean: " + Math.rint(bk.getMeanErrorValidation() * 10000) / 10000  + "\n");
+				 fichero.write("\t\t Stddev: " + Math.rint(bk.getStddevErrorValidation() * 10000) / 10000  + "\n");
 				 fichero.write("\t Test Set \n");
-				 fichero.write("\t\t" +meanErrorTest + "\n");
-				 fichero.write("\t\t" + stddevTest+ "\n");
+				 fichero.write("\t\t" + Math.rint(bk.getErrorTest() * 10000) / 10000  + "\n");
 				 fichero.write("\t Test Set Clasification\n");
-				// fichero.write("\t\t" +meanTestSetClafication + "\n");
-				// fichero.write("\t\t" + stddevTestSetClafication+ "\n");
+				 fichero.write("\t\t" + bk.getTestSetClasification() + "\n");
 				 fichero.write("\t Overfit \n");
-				 fichero.write("\t\t Mean" + meanOverfit + "\n");
-				 fichero.write("\t\t Stddev" + stddevOverfit + "\n");
+				 fichero.write("\t\t Mean: " + Math.rint(bk.getMeanOverfit() * 10000) / 10000  + "\n");
+				 fichero.write("\t\t Stddev: " + Math.rint(bk.getStddevOverfit() * 10000) / 10000  + "\n");
 				 fichero.write("\t Total epochs \n");
-				 fichero.write("\t\t Mean" + meanEpochs + "\n");
-				 fichero.write("\t\t Stddev" + stddevEpochs + "\n");
+				 fichero.write("\t\t" +(int) bk.getTotalEpochs() + "\n");
 				 fichero.write("\t Relevant epochs \n");
-				 fichero.write("\t\t Mean" + meanRelevantEpochs + "\n");
-				 fichero.write("\t\t Stddev" + stddevRelevantEpochs + "\n");
+				 fichero.write("\t\t" + (int)bk.getRelevantEpochs()+ "\n");
 				 fichero.close();
-			 
-			 
+				 System.out.println("\n\n File created with success in \""+ sFichero +"\"");
 			}//fin for;
-			System.out.println("Espera");
 		} catch (Exception e) {
 			System.out.println("Algorithm.main" + e.toString());
 		}
 
 	}
-	
-	private static double calculateMean(double[] errorsTraining, int epochs) {
-		double sum = 0.0;
-		double mean = 0.0;
 
-		try {
-			for (int i = 0; i < epochs; i++)
-				sum += errorsTraining[i];
-
-			mean = (sum / epochs);
-			return mean;
-		} catch (Exception e) {
-			System.out.println("Backpropagation.calculateMean" + e.toString());
-			return 0.0;
-		}
-
-	}
-
-	private static double calculateStddev(double[] errorsTraining, double mean,
-			int epochs) {
-		double sum = 0.0;
-		double stddev = 0.0;
-
-		try {
-			for (int i = 0; i < epochs; i++)
-				sum += Math.pow(errorsTraining[i] - mean, 2);
-
-			stddev = sum / epochs;
-
-			return stddev;
-		} catch (Exception e) {
-			System.out
-					.println("Backpropagation.calculateStddev" + e.toString());
-			return 0.0;
-		}
-
-	}
 
 }

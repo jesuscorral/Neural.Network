@@ -1,3 +1,10 @@
+/*
+ * @author Jesús Corral Versión
+ * @University Universidad de Sevilla
+ * @Subject Inteligencia Artificial 2
+ * @Proyect Backpropagation Algorithm with momentum and cross validation for Neural Network
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,23 +13,6 @@ public class DataValidation extends Data {
 	
 	private double inputs[][];
 	private double outputs[][];
-	
-	public double[][] getInputs() {
-		return inputs;
-	}
-
-	public void setInputs(double[][] inputs) {
-		this.inputs = inputs;
-	}
-
-	public double[][] getOutputs() {
-		return outputs;
-	}
-
-	public void setOutputs(double[][] outputs) {
-		this.outputs = outputs;
-	}
-
 	
 	public void LoadDataValidation(String path) {
 		List<String[]> data = new ArrayList<String[]>();
@@ -36,13 +26,11 @@ public class DataValidation extends Data {
 		} catch (Exception e) {
 			System.out.println("DataValidation.LoadDataValidation" + e.toString());
 		}
-
-
 	}
 	
 	private void LoadInput(List<String[]> data) {
-		int inicio = getHeadLines() + getTraining_examples();
-		int fin = getHeadLines() + getTraining_examples() + getValidation_examples();
+		int start = getHeadLines() + getTraining_examples();
+		int end = getHeadLines() + getTraining_examples() + getValidation_examples();
 		int numIn;
 		
 		if(getReal_in() == 0)
@@ -53,16 +41,15 @@ public class DataValidation extends Data {
 		inputs = new double[data.size()][numIn];
 
 		try {
-			for (int i = inicio; i < fin; i++)
+			for (int i = start; i < end; i++)
 				for (int j = 0; j < numIn; j++) {
-					inputs[i - inicio][j] = Double.parseDouble(data.get(i)[j]);
+					inputs[i - start][j] = Double.parseDouble(data.get(i)[j]);
 				}
 		} catch (Exception e) {
 			System.out.println("DataValidation.LoadInputReal" + e.toString());
 		}
 
 	}
-
 
 	private void LoadOutput(List<String[]> data) {
 		int inicio = getHeadLines() + getTraining_examples();
@@ -79,7 +66,7 @@ public class DataValidation extends Data {
 		else
 			inicio2 = getReal_in();
 
-		//Comprueba si la salida es Real o Boolena para cargar el numero de salidas correspondiente
+		/*Check if the output is Real or Boolean to get correctly the number of outputs*/
 		if(getReal_out() == 0)
 			numOuts = getBool_out();
 		else
@@ -97,4 +84,22 @@ public class DataValidation extends Data {
 		}
 
 	}
+	
+	/*Getters and Setters*/
+	public double[][] getInputs() {
+		return inputs;
+	}
+
+	public void setInputs(double[][] inputs) {
+		this.inputs = inputs;
+	}
+
+	public double[][] getOutputs() {
+		return outputs;
+	}
+
+	public void setOutputs(double[][] outputs) {
+		this.outputs = outputs;
+	}
+
 }
